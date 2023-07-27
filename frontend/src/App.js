@@ -7,6 +7,7 @@ import Footer from './components/Footer'; // Import the Footer component
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from './components/navbar';
 
+// Main File
 function App() {
   return (
     <>
