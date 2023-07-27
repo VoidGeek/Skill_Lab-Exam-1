@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
 
 const Course = () => {
   const courseData = [
@@ -55,6 +56,7 @@ const Course = () => {
   ];
 
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleCardHover = (id) => {
     setHoveredCard(id);
@@ -71,6 +73,23 @@ const Course = () => {
     transform: hoveredCard === id ? 'translateY(-10px)' : 'none',
     backgroundColor: hoveredCard === id ? '#f8f9fa' : 'white',
   });
+
+  const [formData, setFormData] = useState({
+    name: '',
+    cardDetails: '',
+    phoneNumber: '',
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+    setShowModal(false);
+  };
 
   return (
     <div className="container">
@@ -106,7 +125,9 @@ const Course = () => {
                     <p>Duration: {course.duration}</p>
                     <p>Eligibility Criteria: {course.eligibility}</p>
                     <p>Fees: {course.fee}</p>
-                    <button className="btn btn-primary">Register</button>
+                    <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+                      Register
+                    </button>
                   </>
                 )}
               </div>
@@ -114,6 +135,52 @@ const Course = () => {
           </div>
         ))}
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Register for Course</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Name:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Card Details:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="cardDetails"
+                value={formData.cardDetails}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone Number:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
